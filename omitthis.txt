@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleccionar archivo PDF</title>
+</head>
+<body>
+    <input type="file" id="inputArchivo" accept="application/pdf" />
+    <button id="botonCargar">Cargar archivo</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleccionar archivo PDF</title>
+</head>
+<body>
+    <input type="file" id="inputArchivo" accept="application/pdf" />
+    <button id="botonCargar">Cargar archivo</button>
+
+    <script>
+        const inputArchivo = document.getElementById('inputArchivo');
+        const botonCargar = document.getElementById('botonCargar');
+
+        botonCargar.addEventListener('click', () => {
+            const archivoSeleccionado = inputArchivo.files[0];
+            if (archivoSeleccionado) {
+                // Aquí puedes procesar el archivo seleccionado
+                console.log('Archivo seleccionado:', archivoSeleccionado.name);
+            } else {
+                console.log('No se ha seleccionado ningún archivo');
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+{
+    "manifest_version": 3,
+    "name": "Gulag Cleaner",
+    "version": "1.0.0",
+    "description": "Elimina la publicidad de tus apuntes",
+    "permissions": [
+        "activeTab", "https://cdnjs.cloudflare.com"
+    ],
+    "icons": {
+        "16": "icon.png",
+        "48": "icon.png",
+        "128": "icon.png"
+    },
+    "action": {
+        "default_icon": {
+            "16": "icon.png",
+            "24": "icon.png",
+            "32": "icon.png"
+        },
+        "default_title": "Gulag Cleaner",
+        "default_popup": "popup.html"
+    },
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self';",
+        "sandbox": "sandbox allow-scripts ; script-src 'self' https://cdnjs.cloudflare.com"
+      }
+}
+
+
+const inputArchivo = document.getElementById('inputArchivo');
+const botonCargar = document.getElementById('botonCargar');
+const resultado = document.getElementById('resultado');
+
+botonCargar.addEventListener('click', () => {
+    const archivoSeleccionado = inputArchivo.files[0];
+    if (archivoSeleccionado) {
+        const reader = new FileReader();
+        reader.onload = async function (event) {
+            const pdfData = new Uint8Array(event.target.result);
+            const pdfDocument = await pdfjsLib.getDocument({data: pdfData}).promise;
+            resultado.textContent = 'Número de páginas: ' + pdfDocument.numPages;
+        };
+        reader.readAsArrayBuffer(archivoSeleccionado);
+    } else {
+        console.log('No se ha seleccionado ningún archivo');
+    }
+});
