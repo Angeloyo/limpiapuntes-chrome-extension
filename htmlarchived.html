@@ -9,16 +9,9 @@
     <link href="popup.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    <div class="container">
-        <input type="file" id="file-input" multiple />
-        <label for="file-input">
-            <i class="fa-solid fa-arrow-up-from-bracket"></i>
-            &nbsp; Choose Files To Upload
-        </label>
-        <div id="num-of-files">No Files Choosen</div>
-        <ul id="files-list"></ul>
-    </div>
-    <!-- Script -->
+    <button class="btn">Subir archivos</button>
+    <input type="file" id="inputArchivo" accept="application/pdf" multiple/>
+    <p id="resultado"></p>
     <script src="popup.js"></script>
 </body>
 </html>

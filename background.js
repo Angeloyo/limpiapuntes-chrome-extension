@@ -1,3 +1,4 @@
+//esto no sirve pa' na' !
 chrome.runtime.onMessage.addListener(function (msg) {
     if (msg.action === 'browse')
     {
