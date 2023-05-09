@@ -25,6 +25,24 @@ fileInput.addEventListener('change', async function () {
             }
             fileList.appendChild(listItem);
 
+        };
+        reader.readAsArrayBuffer(files[i]);
+    }
+
+    saveButton.style.visibility = 'visible';
+
+    saveButton.addEventListener('click', async function () {
+        await downloadFiles(files);
+    });
+
+});
+
+async function downloadFiles(files) {
+    for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = async function (event) {
+
+            let fileName = files[i].name;
             const pdfData = new Uint8Array(event.target.result);
             const pdfDoc = await PDFLib.PDFDocument.load(pdfData);
             const helveticaFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica)
@@ -43,7 +61,6 @@ fileInput.addEventListener('change', async function () {
             const blob = new Blob([pdfBytes], { type: "application/pdf" });
             const url = URL.createObjectURL(blob);
             
-            //fileName = fileName + "_limpiapuntes";
             const extension = fileName.split(".").pop();
             const name = fileName.split(".").shift();
             const newFileName = name + "_modificado." + extension;
@@ -56,10 +73,5 @@ fileInput.addEventListener('change', async function () {
         };
         reader.readAsArrayBuffer(files[i]);
     }
-
-    //saveButtonDiv.classList.add('container');
-    saveButton.style.visibility = 'visible';
-    //saveButton.classList.add('class-save-button');
-    //saveButton.classList.add('button');
-
-});
+  }
+  

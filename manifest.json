@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "LimpiApuntes",
     "version": "1.0.0",
-    "description": "Elimina la publicidad de tus apuntes",
+    "description": "Elimina la publicidad de tus apuntes.",
     "permissions": [
         "downloads"
     ],
