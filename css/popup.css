@@ -70,14 +70,15 @@ ul {
 button {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
-  color: white;
-  background-color: #171717;
+  color: black;
+  background-color: white;
   padding: 1em 2em;
   border: none;
   border-radius: .6rem;
   position: relative;
   cursor: pointer;
   overflow: hidden;
+  box-shadow: 0 0.75em 2.18em rgb(1, 28, 71, 0.3);
 }
 
 button span:not(:nth-child(6)) {
@@ -87,7 +88,7 @@ button span:not(:nth-child(6)) {
   transform: translate(-50%, -50%);
   height: 30px;
   width: 30px;
-  background-color: #025bee;
+  background-color: #dceaff;
   border-radius: 50%;
   transition: .6s ease;
 }
