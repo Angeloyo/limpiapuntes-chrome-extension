@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seleccionar archivo PDF</title>
-    <script src="./js/pdf.min.js"></script>
-    <script src="./js/pdf.worker.min.js"></script>
+    <!-- <script src="./js/pdf.min.js"></script>
+    <script src="./js/pdf.worker.min.js"></script> -->
+    <!-- <script src="./js/pdf-lib.min.js"></script> -->
     <script src="./js/pdf-lib.js"></script>
+    <!-- <script src="https://unpkg.com/pdf-lib"></script> -->
     <link href="./css/popup.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -14,12 +16,35 @@
         <input type="file" id="file-input" multiple />
         <label for="file-input">
             <i class="fa-solid fa-arrow-up-from-bracket"></i>
-            &nbsp; Choose Files To Upload
+            &nbsp; Elige archivos para quitar publicidad
         </label>
-        <div id="num-of-files">No Files Choosen</div>
+        <div id="num-of-files">Ningún archivo elegido</div>
         <ul id="files-list"></ul>
+        
+    </div>
+    <!-- <button id="save-button" >
+        <span class="circle1"></span>
+        <span class="circle2"></span>
+        <span class="circle3"></span>
+        <span class="circle4"></span>
+        <span class="circle5"></span>
+        <span class="text">Descargar!</span>
+    </button> -->
+    <div id="save-button-div" class="save-button-div-c">
+        <!-- <button id="save-button" hidden>Descargar!</button> -->
+        <!-- <button id="save-button" class="button" hidden>
+            <span class="button-content">Descargar!</span>
+        </button> -->
+        <button id="save-button">
+            <span class="circle1"></span>
+            <span class="circle2"></span>
+            <span class="circle3"></span>
+            <span class="circle4"></span>
+            <span class="circle5"></span>
+            <span class="text">Descargar!</span>
+        </button>
     </div>
     <!-- Script -->
-    <script src="./js/popup.js"></script>
+    <script type="module" src="./js/popup.js"></script>
 </body>
 </html>

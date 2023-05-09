@@ -7,17 +7,18 @@
         "downloads"
     ],
     "icons": {
-        "16": "icon.png",
-        "48": "icon.png",
-        "128": "icon.png"
+        "16": "./img/icon.png",
+        "48": "./img/icon.png",
+        "128": "./img/icon.png"
     },
     "action": {
         "default_icon": {
-            "16": "icon.png",
-            "24": "icon.png",
-            "32": "icon.png"
+            "16": "./img/icon.png",
+            "24": "./img/icon.png",
+            "32": "./img/icon.png"
         },
         "default_title": "Gulag Cleaner",
         "default_popup": "popup.html"
     }
+    
 }
