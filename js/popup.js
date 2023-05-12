@@ -52,6 +52,41 @@ async function editFiles(files) {
             const pdfDoc = await PDFLib.PDFDocument.load(pdfData);
             //const pdfDoc = await PDFLib.PDFDocument.load(pdfData, {ignoreEncryption: true });
 
+            const pages = pdfDoc.getPages();
+            const firstPage = pages[0];
+            const { width, height } = firstPage.getSize(),
+            
+            const pdfBytes = await pdfDoc.save();
+            const blob = new Blob([pdfBytes], { type: "application/pdf" });
+            const url = URL.createObjectURL(blob);
+            
+            const extension = fileName.split(".").pop();
+            const name = fileName.split(".").shift();
+            const newFileName = name + "_modificado." + extension;
+
+            // chrome.downloads.download({
+            //     url: url,
+            //     filename: newFileName,
+            //     saveAs: false
+            // });
+
+            await downloadFile(newFileName, url);
+        };
+        reader.readAsArrayBuffer(files[i]);
+    }
+}
+
+async function editFiles(files) {
+    for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = async function (event) {
+
+            let fileName = files[i].name;
+            const pdfData = new Uint8Array(event.target.result);
+
+            const pdfDoc = await PDFLib.PDFDocument.load(pdfData);
+            //const pdfDoc = await PDFLib.PDFDocument.load(pdfData, {ignoreEncryption: true });
+
             const helveticaFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica)
             const pages = pdfDoc.getPages();
             const firstPage = pages[0];
