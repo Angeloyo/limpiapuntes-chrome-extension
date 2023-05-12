@@ -41,34 +41,22 @@ fileInput.addEventListener('change', async function () {
 
 });
 
-async function editFiles(files) {
+async function removeAds(files) {
     for (let i = 0; i < files.length; i++) {
         const reader = new FileReader();
         reader.onload = async function (event) {
 
-            let fileName = files[i].name;
-            const pdfData = new Uint8Array(event.target.result);
+            //Datos del pdf: const pdfData =
 
-            const pdfDoc = await PDFLib.PDFDocument.load(pdfData);
-            //const pdfDoc = await PDFLib.PDFDocument.load(pdfData, {ignoreEncryption: true });
+            //Llamar funcion python pasando como argumento el pdf 
 
-            const pages = pdfDoc.getPages();
-            const firstPage = pages[0];
-            const { width, height } = firstPage.getSize(),
-            
-            const pdfBytes = await pdfDoc.save();
-            const blob = new Blob([pdfBytes], { type: "application/pdf" });
+            // crear blob: const blob = 
             const url = URL.createObjectURL(blob);
-            
+
+            let fileName = files[i].name;
             const extension = fileName.split(".").pop();
             const name = fileName.split(".").shift();
             const newFileName = name + "_modificado." + extension;
-
-            // chrome.downloads.download({
-            //     url: url,
-            //     filename: newFileName,
-            //     saveAs: false
-            // });
 
             await downloadFile(newFileName, url);
         };

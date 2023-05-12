@@ -1,11 +1,20 @@
+import sys
 import os
 import pikepdf
 from pdfrw import PdfReader, PdfWriter
 from pdfrw.findobjs import wrap_object, find_objects
 from pdfrw.objects import PdfName
 
-def deembed(pdf_path, replace=True):
+def main():
     
+    # Get the filename argument
+    if len(sys.argv) < 2:
+        print('no file provided!')
+        return
+    pdf_path = sys.argv[-1]
+
+    replace=True
+
     intermediate_pdf_path = pdf_path[:-4] + "_inter.pdf"
     try:
         with pikepdf.Pdf.open(pdf_path) as pdf:
@@ -19,9 +28,7 @@ def deembed(pdf_path, replace=True):
             os.remove(intermediate_pdf_path)
             return {
                 "Success": False,
-                "return_path": "",
                 "Error": "No embedded pages found.",
-                "Meta": metadict
             }
 
         output = pdf_path[:-4] + (".pdf" if replace else "_clean.pdf")
@@ -29,19 +36,17 @@ def deembed(pdf_path, replace=True):
         writer.addpages(pages)
         writer.write()
 
-        # os.rename(output, output.replace('wuolah-free-', ''))
+        os.rename(output, output.replace('wuolah-free-', ''))
         os.remove(intermediate_pdf_path)
 
         return {
             "Success": True,
-            "return_path": output,
             "Error": "",
-            "Meta": metadict
         }
     except Exception as e:
         return {
             "Success": False,
-            "return_path": "",
             "Error": str(e),
-            "Meta": {}
         }
+
+main()
