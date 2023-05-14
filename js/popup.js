@@ -37,6 +37,7 @@ fileInput.addEventListener('change', async function () {
 
 });
 
+
 async function removeAds(files) {
     for (let i = 0; i < files.length; i++) {
         const reader = new FileReader();
@@ -99,7 +100,29 @@ async function editFiles(files) {
     }
   }
 
- 
+  async function callLambdaFunction(file) {
+    const apiGatewayUrl = 'https://your-api-gateway-url.amazonaws.com/your-stage/your-resource';
+    const formData = new FormData();
+    formData.append('file', file);
+  
+    const requestOptions = {
+      method: 'POST',
+      body: formData,
+    };
+  
+    try {
+      const response = await fetch(apiGatewayUrl, requestOptions);
+      if (response.ok) {
+        const modifiedFileBlob = await response.blob();
+        return modifiedFileBlob;
+      } else {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error('Error calling Lambda function:', error);
+    }
+  }
+  
   
   async function downloadFile(d_fileName, d_url) {
     chrome.downloads.download({
