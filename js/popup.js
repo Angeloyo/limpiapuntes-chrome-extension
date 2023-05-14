@@ -37,19 +37,38 @@ fileInput.addEventListener('change', async function () {
 
 });
 
-
-async function removeAds(files) {
+ async function removeAds(files) {
     for (let i = 0; i < files.length; i++) {
         const reader = new FileReader();
         reader.onload = async function (event) {
+            const arrayBuffer = event.target.result;
+            const base64Pdf = arrayBufferToBase64(arrayBuffer);
 
-            // enviar pdf a función lambda y obtener nuevo pdf
+            // Enviar PDF a la función Lambda y obtener el nuevo PDF
+            const lambdaUrl = 'https://8r3gwub4ne.execute-api.eu-south-2.amazonaws.com/default/removeAdsLambda';
+            const response = await fetch(lambdaUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ body: base64Pdf }),
+            });
+
+            if (!response.ok) {
+                console.error('Error al procesar el PDF:', response.statusText);
+                return;
+            }
+
+            const responseData = await response.json();
+            const processedPdfBase64 = responseData.body;
+            const processedPdfArrayBuffer = base64ToArrayBuffer(processedPdfBase64);
+            const blob = new Blob([processedPdfArrayBuffer], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
 
             let fileName = files[i].name;
-            const extension = fileName.split(".").pop();
-            const name = fileName.split(".").shift();
-            const newFileName = name + "_modificado." + extension;
+            const extension = fileName.split('.').pop();
+            const name = fileName.split('.').shift();
+            const newFileName = name + '_mod.' + extension;
 
             await downloadFile(newFileName, url);
         };
@@ -57,78 +76,34 @@ async function removeAds(files) {
     }
 }
 
-async function editFiles(files) {
-    for (let i = 0; i < files.length; i++) {
-        const reader = new FileReader();
-        reader.onload = async function (event) {
 
-            let fileName = files[i].name;
-            const pdfData = new Uint8Array(event.target.result);
+async function downloadFile(d_fileName, d_url) {
+  chrome.downloads.download({
+      url: d_url,
+      filename: d_fileName,
+      saveAs: false
+  });
+}
 
-            const pdfDoc = await PDFLib.PDFDocument.load(pdfData);
-            //const pdfDoc = await PDFLib.PDFDocument.load(pdfData, {ignoreEncryption: true });
 
-            const helveticaFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica)
-            const pages = pdfDoc.getPages();
-            const firstPage = pages[0];
-            const { width, height } = firstPage.getSize()
-            firstPage.drawText('This text was added with JavaScript!', {
-                x: 5,
-                y: height / 2 + 300,
-                size: 50,
-                font: helveticaFont,
-                color: PDFLib.rgb(0.95, 0.1, 0.1),
-                rotate: PDFLib.degrees(-45),
-            });                     
-            const pdfBytes = await pdfDoc.save();
-            const blob = new Blob([pdfBytes], { type: "application/pdf" });
-            const url = URL.createObjectURL(blob);
-            
-            const extension = fileName.split(".").pop();
-            const name = fileName.split(".").shift();
-            const newFileName = name + "_modificado." + extension;
-
-            // chrome.downloads.download({
-            //     url: url,
-            //     filename: newFileName,
-            //     saveAs: false
-            // });
-
-            await downloadFile(newFileName, url);
-        };
-        reader.readAsArrayBuffer(files[i]);
+function arrayBufferToBase64(buffer) {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
     }
-  }
+    return window.btoa(binary);
+}
 
-  async function callLambdaFunction(file) {
-    const apiGatewayUrl = 'https://your-api-gateway-url.amazonaws.com/your-stage/your-resource';
-    const formData = new FormData();
-    formData.append('file', file);
-  
-    const requestOptions = {
-      method: 'POST',
-      body: formData,
-    };
-  
-    try {
-      const response = await fetch(apiGatewayUrl, requestOptions);
-      if (response.ok) {
-        const modifiedFileBlob = await response.blob();
-        return modifiedFileBlob;
-      } else {
-        throw new Error(`Error: ${response.status} ${response.statusText}`);
-      }
-    } catch (error) {
-      console.error('Error calling Lambda function:', error);
+function base64ToArrayBuffer(base64) {
+    const binaryString = window.atob(base64);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
     }
-  }
-  
-  
-  async function downloadFile(d_fileName, d_url) {
-    chrome.downloads.download({
-        url: d_url,
-        filename: d_fileName,
-        saveAs: false
-    });
-  }
+    return bytes.buffer;
+}
+
   
