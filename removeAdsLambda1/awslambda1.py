@@ -1,20 +1,24 @@
-import sys
 import os
+import boto3
 import pikepdf
 from pdfrw import PdfReader, PdfWriter
 from pdfrw.findobjs import wrap_object, find_objects
 from pdfrw.objects import PdfName
 
-def main():
-    
-    # Get the filename argument
-    if len(sys.argv) < 2:
-        print('no file provided!')
-        return
-    pdf_path = sys.argv[-1]
+s3 = boto3.client('s3')
 
+def clean_pdf(event, context):
+    # Get the S3 bucket and object key from the Lambda event
+    bucket = event['Records'][0]['s3']['bucket']['name']
+    key = event['Records'][0]['s3']['object']['key']
 
-    intermediate_pdf_path = pdf_path[:-4] + "_inter.pdf"
+    pdf_path = '/tmp/input.pdf'
+    intermediate_pdf_path = '/tmp/intermediate.pdf'
+    output_pdf_path = '/tmp/output.pdf'
+
+    # Download the PDF file from S3
+    s3.download_file(bucket, key, pdf_path)
+
     try:
         with pikepdf.Pdf.open(pdf_path) as pdf:
             pdf.save(intermediate_pdf_path)
@@ -30,12 +34,15 @@ def main():
                 "Error": "No embedded pages found.",
             }
 
-        output = pdf_path[:-4] + ("_clean.pdf")
-        writer = PdfWriter(output)
+        writer = PdfWriter(output_pdf_path)
         writer.addpages(pages)
         writer.write()
 
         os.remove(intermediate_pdf_path)
+
+        # Upload the modified PDF file to S3
+        output_key = key.replace('.pdf', '_clean.pdf')
+        s3.upload_file(output_pdf_path, bucket, output_key)
 
         return {
             "Success": True,
@@ -46,5 +53,3 @@ def main():
             "Success": False,
             "Error": str(e),
         }
-
-main()

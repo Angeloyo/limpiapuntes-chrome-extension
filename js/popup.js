@@ -31,10 +31,6 @@ fileInput.addEventListener('change', async function () {
 
     saveButton.style.visibility = 'visible';
 
-    // saveButton.addEventListener('click', async function () {
-    //     await editFiles(files);
-    // });
-
     saveButton.addEventListener('click', async function () {
         await removeAds(files);
     });
@@ -46,11 +42,7 @@ async function removeAds(files) {
         const reader = new FileReader();
         reader.onload = async function (event) {
 
-            //Datos del pdf: const pdfData =
-
-            //Llamar funcion python pasando como argumento el pdf 
-
-            // crear blob: const blob = 
+            // enviar pdf a función lambda y obtener nuevo pdf
             const url = URL.createObjectURL(blob);
 
             let fileName = files[i].name;
