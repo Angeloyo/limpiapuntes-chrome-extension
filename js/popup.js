@@ -41,28 +41,9 @@ fileInput.addEventListener('change', async function () {
     for (let i = 0; i < files.length; i++) {
         const reader = new FileReader();
         reader.onload = async function (event) {
-            const arrayBuffer = event.target.result;
-            const base64Pdf = arrayBufferToBase64(arrayBuffer);
 
-            // Enviar PDF a la función Lambda y obtener el nuevo PDF
-            const lambdaUrl = 'https://8r3gwub4ne.execute-api.eu-south-2.amazonaws.com/default/removeAdsLambda';
-            const response = await fetch(lambdaUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ body: base64Pdf }),
-            });
+            // Enviar PDF y recibirlo modificado
 
-            if (!response.ok) {
-                console.error('Error al procesar el PDF:', response.statusText);
-                return;
-            }
-
-            const responseData = await response.json();
-            const processedPdfBase64 = responseData.body;
-            const processedPdfArrayBuffer = base64ToArrayBuffer(processedPdfBase64);
-            const blob = new Blob([processedPdfArrayBuffer], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
 
             let fileName = files[i].name;
@@ -86,24 +67,5 @@ async function downloadFile(d_fileName, d_url) {
 }
 
 
-function arrayBufferToBase64(buffer) {
-    let binary = '';
-    const bytes = new Uint8Array(buffer);
-    const len = bytes.byteLength;
-    for (let i = 0; i < len; i++) {
-        binary += String.fromCharCode(bytes[i]);
-    }
-    return window.btoa(binary);
-}
-
-function base64ToArrayBuffer(base64) {
-    const binaryString = window.atob(base64);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-    }
-    return bytes.buffer;
-}
 
   
