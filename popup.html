@@ -3,13 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seleccionar archivo PDF</title>
-    <!-- <script src="./js/pdf.min.js"></script>
-    <script src="./js/pdf.worker.min.js"></script> -->
-    <!-- <script src="./js/pdf-lib.min.js"></script> -->
-    <script src="./js/pdf-lib.js"></script>
-    <script src="./js/pyodide.js"></script>
-    <!-- <script src="https://unpkg.com/pdf-lib"></script> -->
+    <title>Limpiapuntes Chrome Extension</title>
     <link href="./css/popup.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,21 +15,20 @@
         </label>
         <div id="num-of-files">Ningún archivo elegido</div>
         <ul id="files-list"></ul>
-        
     </div>
-    <!-- <button id="save-button" >
-        <span class="circle1"></span>
-        <span class="circle2"></span>
-        <span class="circle3"></span>
-        <span class="circle4"></span>
-        <span class="circle5"></span>
-        <span class="text">Descargar!</span>
-    </button> -->
     <div id="save-button-div" class="save-button-div-c">
-        <!-- <button id="save-button" hidden>Descargar!</button> -->
-        <!-- <button id="save-button" class="button" hidden>
-            <span class="button-content">Descargar!</span>
-        </button> -->
+        <div class="conta-load">
+            <div id="loading" class="dot-spinner">
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+        </div>
+        </div>
         <button id="save-button">
             <span class="circle1"></span>
             <span class="circle2"></span>
@@ -46,6 +39,6 @@
         </button>
     </div>
     <!-- Script -->
-    <script type="module" src="./js/popup.js"></script>
+    <script src="./js/popup.js"></script>
 </body>
 </html>
