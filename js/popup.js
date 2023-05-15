@@ -37,25 +37,57 @@ fileInput.addEventListener('change', async function () {
 
 });
 
- async function removeAds(files) {
+async function removeAds(files) {
     for (let i = 0; i < files.length; i++) {
-        const reader = new FileReader();
-        reader.onload = async function (event) {
-
-            // Enviar PDF y recibirlo modificado
-
-            const url = URL.createObjectURL(blob);
-
-            let fileName = files[i].name;
-            const extension = fileName.split('.').pop();
-            const name = fileName.split('.').shift();
-            const newFileName = name + '_mod.' + extension;
-
-            await downloadFile(newFileName, url);
-        };
-        reader.readAsArrayBuffer(files[i]);
+      const reader = new FileReader();
+      reader.onload = async function (event) {
+        // Send file and receive the modified one
+        const formData = new FormData();
+        formData.append("file", files[i]);
+  
+        const response = await fetch("https://limitless-falls-79195.herokuapp.com/upload", {
+          method: "POST",
+          body: formData,
+        });
+  
+        if (response.ok) {
+          const blob = await response.blob();
+  
+          const url = URL.createObjectURL(blob);
+  
+          let fileName = files[i].name;
+          const extension = fileName.split(".").pop();
+          const name = fileName.split(".").shift();
+          const newFileName = name + "_limpio." + extension;
+  
+          await downloadFile(newFileName, url);
+        } else {
+          console.error("Error uploading file:", response.statusText);
+        }
+      };
+      reader.readAsArrayBuffer(files[i]);
     }
-}
+  }
+
+//  async function removeAds(files) {
+//     for (let i = 0; i < files.length; i++) {
+//         const reader = new FileReader();
+//         reader.onload = async function (event) {
+
+//             // Send file and receive the modified one
+
+//             const url = URL.createObjectURL(blob);
+
+//             let fileName = files[i].name;
+//             const extension = fileName.split('.').pop();
+//             const name = fileName.split('.').shift();
+//             const newFileName = name + '_mod.' + extension;
+
+//             await downloadFile(newFileName, url);
+//         };
+//         reader.readAsArrayBuffer(files[i]);
+//     }
+// }
 
 
 async function downloadFile(d_fileName, d_url) {
