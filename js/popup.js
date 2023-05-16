@@ -44,7 +44,7 @@ async function removeAds(files) {
         const formData = new FormData();
         formData.append("file", files[i]);
         // http://localhost:5000/upload
-        const response = await fetch("https://peaceful-sierra-19689.herokuapp.com/upload", {
+        const response = await fetch("https://enigmatic-brushlands-61693.herokuapp.com/upload", {
           method: "POST",
           body: formData,
         });
