@@ -36,6 +36,7 @@ fileInput.addEventListener('change', async function () {
 });
 
 async function removeAds(files) {
+  let cont = 0;
     loading.style.visibility = 'visible';
     for (let i = 0; i < files.length; i++) {
       const reader = new FileReader();
@@ -56,10 +57,16 @@ async function removeAds(files) {
           const name = fileName.split(".").shift();
           const newFileName = name + "_limpio." + extension;
           await downloadFile(newFileName, url);
-          loading.style.visibility = 'hidden';
+          
         } else {
           console.error("Error uploading file:", response.statusText);
         }
+
+        cont++;
+        if(cont==files.length){
+          loading.style.visibility = 'hidden';
+        }
+
       };
       reader.readAsArrayBuffer(files[i]);
     }
