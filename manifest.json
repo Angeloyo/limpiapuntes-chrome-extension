@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "LimpiApuntes",
+    "name": "Limpiapuntes",
     "version": "1.0.0",
     "description": "Limpia tus apuntes de publicidad.",
     "permissions": [
