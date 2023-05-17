@@ -6,7 +6,8 @@
   /* font-family: "Poppins", sans-serif; */
 }
 body {
-  background-color: #a5c7ff;
+  /* background-color: #d0ccf5; */
+  background-color: #e4e1ff;
   width: 400px;
   height: 400px;
   margin-bottom: 40px;
@@ -38,7 +39,7 @@ input[type="file"] {
 label {
   display: block;
   position: relative;
-  background-color: #025bee;
+  background-color: #ff6a9b;
   color: #ffffff;
   font-size: 1.12em;
   font-weight: 500;
@@ -59,13 +60,20 @@ ul {
 }
 .container li {
   font-weight: 500;
-  background-color: #eff5ff;
-  color: #025bee;
+  background-color: #efedff;
+  color: #6d64d6;
   margin-bottom: 1em;
   padding: 1.1em 1em;
   border-radius: 0.3em;
   display: flex;
   justify-content: space-between;
+}
+
+.banner{
+  margin-top: 2rem;
+  margin-left: 2rem;
+  width: auto;
+  height: 3.6rem;
 }
 
 /* ------------------------------------------------------ */
@@ -87,12 +95,12 @@ button {
 
 button span:not(:nth-child(6)) {
   position: absolute;
-  left: 50%;
-  top: 50%;
+  left: 45%;
+  top: 55%;
   transform: translate(-50%, -50%);
   height: 30px;
-  width: 30px;
-  background-color: #dceaff;
+  width: 35px;
+  background-color: #ffc3d7;
   border-radius: 50%;
   transition: .6s ease;
 }
