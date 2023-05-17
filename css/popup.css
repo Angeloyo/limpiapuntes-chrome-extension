@@ -1,3 +1,4 @@
+/* https://codingartistweb.com/2022/11/custom-file-upload-button/ */
 * {
   padding: 0;
   margin: 0;
@@ -67,7 +68,8 @@ ul {
   justify-content: space-between;
 }
 
-
+/* ------------------------------------------------------ */
+/* Button CSS Mit License: https://uiverse.io/KINGFRESS/purple-kangaroo-17 */
 button {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
@@ -123,6 +125,7 @@ button:hover span:not(:nth-child(6)) {
   transform: translate(-50%, -50%) scale(4);
   transition: 1.5s ease;
 }
+/* End button CSS ---------------------------------------- */
 
 .save-button-div-c{
   text-align: center;
@@ -133,7 +136,8 @@ button:hover span:not(:nth-child(6)) {
   justify-content: center;
   margin-bottom: 50px;
 }
-
+/* ------------------------------------------------------- */
+/* Loading animation MIT License: https://uiverse.io/abrahamcalsin/serious-turkey-52 */
 .dot-spinner {
   --uib-size: 2.8rem;
   --uib-speed: .9s;
@@ -237,3 +241,4 @@ button:hover span:not(:nth-child(6)) {
     opacity: 1;
   }
 }
+/* End loading animation --------------------------------- */
