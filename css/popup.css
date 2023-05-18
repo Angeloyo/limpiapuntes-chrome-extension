@@ -219,7 +219,6 @@ button:hover span:not(:nth-child(6)) {
     transform: scale(0);
     opacity: 0.5;
   }
-
   50% {
     transform: scale(1);
     opacity: 1;
