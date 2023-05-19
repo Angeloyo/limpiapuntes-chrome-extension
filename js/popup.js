@@ -48,24 +48,19 @@ async function removeAds(files) {
           body: formData,
         });
         if (response.ok) {
-          const contentType = response.headers.get("Content-Type");
-          if (contentType.includes("application/json")) {
-            const responseData = await response.json();
-            if(responseData.Code == 1){
-              errormsg.textContent = "Parece que alguno de los archivos no tiene anuncios.";
-            }
-          }
-          else{
             const blob = await response.blob();
             const url = URL.createObjectURL(blob);
             let fileName = files[i].name;
             const extension = fileName.split(".").pop();
             const name = fileName.split(".").shift();
-            const newFileName = name + "_limpiapuntes." + extension;
+            const newFileName = name + "_out." + extension;
             await downloadFile(newFileName, url);
-          }
         } else {
-          console.error("Error al subir el archivo:", response.statusText);
+          const contentType = response.headers.get("Content-Type");
+          if (contentType.includes("application/json")) {
+            const responseData = await response.json();
+            errormsg.textContent = responseData.Error;
+          }
         }
         cont++;
         if(cont==files.length){
