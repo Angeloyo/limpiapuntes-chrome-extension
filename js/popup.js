@@ -66,7 +66,6 @@ async function removeAds(files) {
             method: "POST",
             body: formData,
           });
-
           if (response.ok) {
             const blob = await response.blob();
             const url = URL.createObjectURL(blob);
@@ -82,16 +81,13 @@ async function removeAds(files) {
               errormsg.textContent = responseData.Error;
             }
           }
-
           cont++;
           if(cont==files.length){
             loading.style.visibility = 'hidden';
           }
-
         }catch(error){
           errormsg.textContent = "Parece que no tienes conexión a internet o el servidor no funciona correctamente.";
         }
-        
       };
       reader.readAsArrayBuffer(files[i]);
     }
