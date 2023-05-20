@@ -55,7 +55,7 @@ async function removeAds(files) {
             let fileName = files[i].name;
             const extension = fileName.split(".").pop();
             const name = fileName.split(".").shift();
-            const newFileName = name + "_out." + extension;
+            const newFileName = name + "_limpiapuntes." + extension;
             await downloadFile(newFileName, url);
           } else {
             const contentType = response.headers.get("Content-Type");
