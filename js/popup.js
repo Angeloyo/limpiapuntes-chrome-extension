@@ -43,11 +43,13 @@ async function removeAds(files) {
         formData.append("file", files[i]);
         // http://localhost:5000/upload
         // https://enigmatic-brushlands-61693.herokuapp.com/upload
-        const response = await fetch("https://enigmatic-brushlands-61693.herokuapp.com/upload", {
-          method: "POST",
-          body: formData,
-        });
-        if (response.ok) {
+        try{
+          const response = await fetch("https://enigmatic-brushlands-61693.herokuapp.com/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          if (response.ok) {
             const blob = await response.blob();
             const url = URL.createObjectURL(blob);
             let fileName = files[i].name;
@@ -55,17 +57,23 @@ async function removeAds(files) {
             const name = fileName.split(".").shift();
             const newFileName = name + "_out." + extension;
             await downloadFile(newFileName, url);
-        } else {
-          const contentType = response.headers.get("Content-Type");
-          if (contentType.includes("application/json")) {
-            const responseData = await response.json();
-            errormsg.textContent = responseData.Error;
+          } else {
+            const contentType = response.headers.get("Content-Type");
+            if (contentType.includes("application/json")) {
+              const responseData = await response.json();
+              errormsg.textContent = responseData.Error;
+            }
           }
+
+          cont++;
+          if(cont==files.length){
+            loading.style.visibility = 'hidden';
+          }
+
+        }catch(error){
+          errormsg.textContent = "Parece que no tienes conexión a internet o el servidor no funciona correctamente.";
         }
-        cont++;
-        if(cont==files.length){
-          loading.style.visibility = 'hidden';
-        }
+        
       };
       reader.readAsArrayBuffer(files[i]);
     }
