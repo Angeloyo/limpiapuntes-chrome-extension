@@ -5,9 +5,27 @@ let saveButton = document.getElementById("save-button");
 let loading = document.getElementById("loading");
 let saveButtonDiv = document.getElementById("save-button-div");
 let errormsg = document.getElementById("id-errormsg");
+let msg = document.getElementById("id-msg");
 saveButton.style.visibility = 'hidden';
 loading.style.visibility = 'hidden';
 let numFiles = 0;
+window.addEventListener('load', loadmsg);
+function loadmsg(){
+  fetch("https://limpiapuntes.com/ext/msg.txt")
+  .then((response) => {
+    if (response.ok) {
+      return response.text();
+    } else {
+      throw new Error("Error al obtener el mensaje");
+    }
+  })
+  .then((message) => {
+    msg.textContent = message;
+  })
+  .catch((error) => {
+    console.error("Error al obtener el mensaje:", error);
+  });
+}
 fileInput.addEventListener('change', async function () {
     let files = this.files;
     errormsg.textContent = "";
