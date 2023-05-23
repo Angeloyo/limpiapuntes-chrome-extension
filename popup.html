@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Limpiapuntes Chrome Extension</title>
     <link href="./css/popup.css" rel="stylesheet" type="text/css" />
+    <script src="./js/jszip.min.js"></script>
 </head>
 <body>
     <img class="banner" src="./img/banner2.png" alt="banner">
     <h3 id="id-msg" class="mensaje"></h3>
     <div class="container">
-        <input type="file" id="file-input" multiple />
-        <label for="file-input">
+        <input accept="application/pdf" type="file" id="file-input" multiple />
+        <label class="label_select" for="file-input">
             <i class="fa-solid fa-arrow-up-from-bracket"></i>
             &nbsp; Elige archivos para quitar publicidad
         </label>
@@ -20,6 +21,13 @@
     </div>
     <div id="save-button-div" class="save-button-div-c">
         <p id="id-errormsg" class="errormsg"></p>
+        <p id="id-errormsg2" class="errormsg"></p>
+        <p id="id-errormsg3" class="errormsg"></p>
+        <div style="visibility: hidden;" id="div_zip" class="cntr">
+            <input type="checkbox" id="cbx" class="hidden-xs-up">
+            <label for="cbx" class="cbx"></label>
+            <span>Descargar como .zip</span>
+        </div>
         <div class="conta-load">
             <div id="loading" class="dot-spinner">
             <div class="dot-spinner__dot"></div>

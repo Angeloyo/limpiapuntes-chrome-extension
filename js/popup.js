@@ -5,32 +5,54 @@ let saveButton = document.getElementById("save-button");
 let loading = document.getElementById("loading");
 let saveButtonDiv = document.getElementById("save-button-div");
 let errormsg = document.getElementById("id-errormsg");
+let errormsg2 = document.getElementById("id-errormsg2");
+let errormsg3 = document.getElementById("id-errormsg3");
+let divzip = document.getElementById("div_zip");
+let cbx = document.getElementById("cbx");
 let msg = document.getElementById("id-msg");
 saveButton.style.visibility = 'hidden';
 loading.style.visibility = 'hidden';
 let numFiles = 0;
+const zip = new JSZip();
 window.addEventListener('load', loadmsg);
-function loadmsg(){
-  fetch("https://limpiapuntes.com/ext/msg.txt")
-  .then((response) => {
-    if (response.ok) {
-      return response.text();
-    } else {
-      throw new Error("Error al obtener el mensaje");
-    }
-  })
-  .then((message) => {
-    msg.textContent = message;
-  })
-  .catch((error) => {
-    console.error("Error al obtener el mensaje:", error);
-  });
+function loadmsg() {
+  fetch("https://limpiapuntes.com/ext/msgv2.txt")
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error("Error al obtener el mensaje");
+      }
+    })
+    .then((data) => {
+      msg.textContent = data.message;
+      const style = data.style;
+      Object.keys(style).forEach((property) => {
+        msg.style[property] = style[property];
+      });
+    })
+    .catch((error) => {
+      console.error("Error al obtener el mensaje:", error);
+    });
+}
+function verificarPDF(file) {
+  var extension = file.name.split('.').pop().toLowerCase();
+  if (extension === 'pdf') {
+    return true;
+  } else {
+    return false;
+  }
 }
 fileInput.addEventListener('change', async function () {
     let files = this.files;
     errormsg.textContent = "";
+    errormsg2.textContent = "";
+    errormsg3.textContent = "";
     numFiles += files.length;
     numOfFiles.textContent = `${numFiles} Archivos seleccionados`;
+    if (numFiles > 1){
+      divzip.style.visibility = 'visible'
+    }
     for (let i = 0; i < files.length; i++) {
         const reader = new FileReader();
         reader.onload = async function (event) {
@@ -52,45 +74,64 @@ fileInput.addEventListener('change', async function () {
     });
 });
 async function removeAds(files) {
-  let cont = 0;
-    loading.style.visibility = 'visible';
-    for (let i = 0; i < files.length; i++) {
-      const reader = new FileReader();
-      reader.onload = async function (event) {
-        const formData = new FormData();
-        formData.append("file", files[i]);
-        // http://localhost:5000/upload
-        // https://enigmatic-brushlands-61693.herokuapp.com/upload
-        try{
-          const response = await fetch("https://enigmatic-brushlands-61693.herokuapp.com/upload", {
-            method: "POST",
-            body: formData,
-          });
-          if (response.ok) {
-            const blob = await response.blob();
-            const url = URL.createObjectURL(blob);
-            let fileName = files[i].name;
-            const extension = fileName.split(".").pop();
-            const name = fileName.split(".").shift();
-            const newFileName = name + "_limpiapuntes." + extension;
-            await downloadFile(newFileName, url);
-          } else {
-            const contentType = response.headers.get("Content-Type");
-            if (contentType.includes("application/json")) {
-              const responseData = await response.json();
-              errormsg.textContent = responseData.Error;
-            }
-          }
-          cont++;
-          if(cont==files.length){
-            loading.style.visibility = 'hidden';
-          }
-        }catch(error){
-          errormsg.textContent = "Parece que no tienes conexión a internet o el servidor no funciona correctamente.";
-        }
-      };
-      reader.readAsArrayBuffer(files[i]);
+  let checked = false;
+  if (numFiles > 1) {
+    checked = cbx.checked;
+  }
+  loading.style.visibility = 'visible';
+  const processFile = async (file) => {
+    if (!verificarPDF(file)) {
+      errormsg.textContent = 'Alguno de los archivos seleccionados no tiene extensión .pdf';
+      numFiles--;
+      return;
     }
+    const reader = new FileReader();
+    const fileLoaded = new Promise((resolve) => {
+      reader.onload = resolve;
+    });
+    reader.readAsArrayBuffer(file);
+    await fileLoaded;
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const response = await fetch("https://enigmatic-brushlands-61693.herokuapp.com/upload", {
+        method: "POST",
+        body: formData,
+      });
+      if (response.ok) {
+        const blob = await response.blob();
+        let fileName = file.name;
+        const extension = fileName.split(".").pop();
+        const name = fileName.split(".").shift();
+        const newFileName = name + "_limpiapuntes." + extension;
+        if (numFiles > 1 && checked) {
+          zip.file(newFileName, blob);
+        } else {
+          const url = URL.createObjectURL(blob);
+          await downloadFile(newFileName, url);
+        }
+      } else {
+        const contentType = response.headers.get("Content-Type");
+        if (contentType.includes("application/json")) {
+          const responseData = await response.json();
+          errormsg3.textContent = responseData.Error;
+        }
+      }
+    } catch (error) {
+      errormsg2.textContent = "Parece que no tienes conexión a internet o el servidor no funciona correctamente.";
+      console.log(error);
+    }
+  };
+  const filesArray = Array.from(files);
+  const promises = filesArray.map(file => processFile(file));
+  await Promise.all(promises);
+  if (checked) {
+    zip.generateAsync({ type: "blob" }).then(function (content) {
+      const url_zip = URL.createObjectURL(content);
+      downloadFile("procesados_limpiapuntes.zip", url_zip);
+    });
+  }
+  loading.style.visibility = 'hidden';
 }
 async function downloadFile(d_fileName, d_url) {
   chrome.downloads.download({
