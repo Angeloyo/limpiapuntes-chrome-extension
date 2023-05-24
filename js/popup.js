@@ -11,7 +11,9 @@ let divzip = document.getElementById("div_zip");
 let cbx = document.getElementById("cbx");
 let msg = document.getElementById("id-msg");
 let infomsg = document.getElementById("info-msg");
+let pacienciamsg = document.getElementById("paciencia-msg");
 saveButton.style.visibility = 'hidden';
+pacienciamsg.style.visibility = 'hidden';
 loading.style.visibility = 'hidden';
 let numFiles = 0;
 const zip = new JSZip();
@@ -80,6 +82,7 @@ async function removeAds(files) {
     checked = cbx.checked;
   }
   loading.style.visibility = 'visible';
+  pacienciamsg.style.visibility = 'visible';
   const processFile = async (file) => {
     if (!verificarPDF(file)) {
       errormsg.textContent = 'Alguno de los archivos seleccionados no tiene extensión .pdf';
@@ -141,6 +144,7 @@ async function removeAds(files) {
   }
   loading.style.visibility = 'hidden';
   infomsg.textContent = ""
+  pacienciamsg.style.visibility = 'hidden';
 }
 async function downloadFile(d_fileName, d_url) {
   chrome.downloads.download({
