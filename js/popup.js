@@ -10,6 +10,7 @@ let errormsg3 = document.getElementById("id-errormsg3");
 let divzip = document.getElementById("div_zip");
 let cbx = document.getElementById("cbx");
 let msg = document.getElementById("id-msg");
+let infomsg = document.getElementById("info-msg");
 saveButton.style.visibility = 'hidden';
 loading.style.visibility = 'hidden';
 let numFiles = 0;
@@ -91,9 +92,13 @@ async function removeAds(files) {
     });
     reader.readAsArrayBuffer(file);
     await fileLoaded;
+    infomsg.textContent = "Procesando " + file.name + " ...";
+    // await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     const formData = new FormData();
     formData.append("file", file);
     try {
+      //https://enigmatic-brushlands-61693.herokuapp.com/upload
+      //http://localhost:5000/upload
       const response = await fetch("https://enigmatic-brushlands-61693.herokuapp.com/upload", {
         method: "POST",
         body: formData,
@@ -123,8 +128,11 @@ async function removeAds(files) {
     }
   };
   const filesArray = Array.from(files);
-  const promises = filesArray.map(file => processFile(file));
-  await Promise.all(promises);
+  // const promises = filesArray.map(file => processFile(file));
+  // await Promise.all(promises);
+  for (const file of filesArray) {
+    await processFile(file);
+  }
   if (checked) {
     zip.generateAsync({ type: "blob" }).then(function (content) {
       const url_zip = URL.createObjectURL(content);
@@ -132,6 +140,7 @@ async function removeAds(files) {
     });
   }
   loading.style.visibility = 'hidden';
+  infomsg.textContent = ""
 }
 async function downloadFile(d_fileName, d_url) {
   chrome.downloads.download({

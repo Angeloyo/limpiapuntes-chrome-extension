@@ -142,6 +142,11 @@ button:hover span:not(:nth-child(6)) {
   color: rgb(177, 39, 39);
   margin-bottom: 10px;
 }
+.infomsg{
+  text-align: center;
+  color: rgb(129, 129, 129);
+  margin-bottom: 10px;
+}
 /* ------------------------------------------------------- */
 /* Loading animation MIT License: https://uiverse.io/abrahamcalsin/serious-turkey-52 */
 .dot-spinner {
