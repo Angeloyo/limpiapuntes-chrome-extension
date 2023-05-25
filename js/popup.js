@@ -249,7 +249,7 @@ async function removeAds(files) {
         const annotationsArray = annotations.asArray();
         annotationsArray.forEach((annotationRef) => {
             const annotation = pdfDoc.context.lookup(annotationRef);
-            if (annotation.get(PDFLib.PDFName.of('Subtype')) === PDFLib.PDFName.of('Link')) {
+            if (annotation && annotation.get(PDFLib.PDFName.of('Subtype')) === PDFLib.PDFName.of('Link')) {
               pdfDoc.context.delete(annotationRef);
             }
         });
@@ -269,7 +269,8 @@ async function removeAds(files) {
   } catch (error) {
     console.log(error);
     let listItem = document.createElement("li");
-    listItem.innerHTML = `<p class="errormsg">${file.name}+" -> "+${error}</p>`;
+    // listItem.innerHTML = `<p class="errormsg">${file.name}+" -> "+${error}</p>`;
+    listItem.innerHTML = `<p class="errormsg"> No podemos procesar el archivo: ${file.name} </p>`;
     eList.appendChild(listItem);
   }
   };
