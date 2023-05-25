@@ -239,7 +239,7 @@ async function removeAds(files) {
         }
       }
       pdfDoc.removePage(0);
-      if(numpaginas_original >= 4){
+      if(numpaginas_original > 4){
         pdfDoc.removePage(2);
       }
       for (const page of pdfDoc.getPages()) {
