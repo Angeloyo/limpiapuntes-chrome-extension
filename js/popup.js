@@ -16,7 +16,8 @@ let numFiles = 0;
 const zip = new JSZip();
 window.addEventListener('load', loadmsg);
 function loadmsg() {
-  fetch("https://limpiapuntes.com/ext/msgv2.txt")
+  const now = Date.now();
+  fetch(`https://limpiapuntes.com/ext/msgv2.txt?${now}`)
     .then((response) => {
       if (response.ok) {
         return response.json();
