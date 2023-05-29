@@ -1,3 +1,1 @@
-## Limpiapuntes Chrome Extension Source Code
-
-Somos open source !
+## Limpiapuntes Chrome Extension 
