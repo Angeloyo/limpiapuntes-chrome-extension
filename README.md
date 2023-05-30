@@ -8,3 +8,9 @@ Para trabajar en local:
 
 1. Clona el repositorio (última versión) o descarga la release que quieras.
 2. En Chrome, ve a chrome://extensions/ -> Cargar descomprimida -> selecciona la carpeta con el código de la extensión
+
+#### Cosas que hacer / Ideas / Problemas
+
+- Contador del número de archivos procesados.
+- Solucionar problema archivos con anuncios de exactamente 101 páginas (pueden darse dos disposiciones de los anuncios).
+- Solucionar que la funcionalidad de descarga no es la esperada cuando se suben dos o más archivos en varias tandas pero en la misma sesión (sin cerrar el popup y volver a abrirlo).
