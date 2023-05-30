@@ -6,6 +6,7 @@ let saveButton = document.getElementById("save-button");
 let loading = document.getElementById("loading");
 let saveButtonDiv = document.getElementById("save-button-div");
 let errormsg = document.getElementById("id-errormsg");
+let errormsg2 = document.getElementById("id-errormsg2");
 let divzip = document.getElementById("div_zip");
 let cbx = document.getElementById("cbx");
 let msg = document.getElementById("id-msg");
@@ -47,6 +48,7 @@ function verificarPDF(file) {
 fileInput.addEventListener('change', async function () {
     let files = this.files;
     errormsg.textContent = "";
+    errormsg2.textContent = "";
     numFiles += files.length;
     numOfFiles.textContent = `${numFiles} Archivos seleccionados`;
     if (numFiles > 1){
@@ -126,9 +128,9 @@ function cola_paginas(num_paginas){
       }
     }
   } else { // 11 pages or more
-    if (num_paginas > 101){ //101 pages or more
+    if (num_paginas >= 101){ //101 pages or more
       cola.push('P'); // 1
-      for(var i = 0 ; i < num_paginas -1 ; i++){
+      for(var i = 0 ; i < num_paginas - 1 ; i++){
         cola.push('A')
       }
     }
@@ -253,6 +255,9 @@ async function removeAds(files) {
       if(numpaginas_original > 4){
         pdfDoc.removePage(2);
       }
+      if(numpaginas_original == 101){
+        errormsg2.textContent = 'Has adjuntado un archivo que tiene exactamente 101 páginas, y hay un error conocido para archivos con este numero de paginas en concreto, por lo que es posible que no se haya procesado correctamente. Disculpa las molestias.';
+      }
       for (const page of pdfDoc.getPages()) {
         const annotationsRef = page.node.Annots();
         if (annotationsRef === undefined) continue;
@@ -280,7 +285,6 @@ async function removeAds(files) {
   } catch (error) {
     console.log(error);
     let listItem = document.createElement("li");
-    // listItem.innerHTML = `<p class="errormsg">${file.name}+" -> "+${error}</p>`;
     listItem.innerHTML = `<p class="errormsg"> No podemos procesar el archivo: ${file.name} </p>`;
     eList.appendChild(listItem);
   }
