@@ -98,9 +98,9 @@ function alx(width){
 }
 function cola_paginas(num_paginas){
   let cola = [];
-  cola.push('P'); // 1
-  cola.push('B'); // 2
   if (num_paginas <= 10) {
+    cola.push('P'); // 1
+    cola.push('B'); // 2
     if (num_paginas > 2) {
       cola.push('A'); // 3
       if (num_paginas > 3) {
@@ -126,33 +126,43 @@ function cola_paginas(num_paginas){
       }
     }
   } else { // 11 pages or more
-    cola.push('A'); // 3
-    cola.push('P'); // 4
-    cola.push('A'); // 5
-    cola.push('A'); // 6
-    cola.push('B'); // 7
-    cola.push('A'); // 8
-    cola.push('A'); // 9
-    cola.push('A'); // 10
-    cola.push('B'); // 11
-    let cont = 11;
-    let restan = num_paginas - cont;
-    while (restan >= 4) {
-      cola.push('A');
-      cola.push('A');
-      cola.push('A');
-      cola.push('B');
-      restan = restan - 4;
+    if (num_paginas > 101){ //101 pages or more
+      cola.push('P'); // 1
+      for(var i = 0 ; i < num_paginas -1 ; i++){
+        cola.push('A')
+      }
     }
-    if (restan === 1) {
-      cola.push('A');
-    } else if (restan === 2) {
-      cola.push('A');
-      cola.push('A');
-    } else if (restan === 3) {
-      cola.push('A');
-      cola.push('A');
-      cola.push('A');
+    else{ //between 11 and 101
+      cola.push('P'); // 1
+      cola.push('B'); // 2
+      cola.push('A'); // 3
+      cola.push('P'); // 4
+      cola.push('A'); // 5
+      cola.push('A'); // 6
+      cola.push('B'); // 7
+      cola.push('A'); // 8
+      cola.push('A'); // 9
+      cola.push('A'); // 10
+      cola.push('B'); // 11
+      let cont = 11;
+      let restan = num_paginas - cont;
+      while (restan >= 4) {
+        cola.push('A');
+        cola.push('A');
+        cola.push('A');
+        cola.push('B');
+        restan = restan - 4;
+      }
+      if (restan === 1) {
+        cola.push('A');
+      } else if (restan === 2) {
+        cola.push('A');
+        cola.push('A');
+      } else if (restan === 3) {
+        cola.push('A');
+        cola.push('A');
+        cola.push('A');
+      }
     }
   }
   return cola;
