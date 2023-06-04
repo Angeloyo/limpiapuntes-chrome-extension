@@ -74,30 +74,7 @@ fileInput.addEventListener('change', async function () {
         await removeAds(files);
     });
 });
-function buy(height){
-  return height * 0.86308;
-}
-function bux(width){
-  return width * 0.144;
-}
-function bly(height){
-  return height * 0.027;
-}
-function blx(width){
-  return width * 0.982;
-}
-function auy(height){
-  return height * 0.985;
-}
-function aux(width){
-  return width * 0.02;
-}
-function aly(height){
-  return height * 0.05;
-}
-function alx(width){
-  return width * 0.955
-}
+
 function cola_paginas(num_paginas){
   let cola = [];
   if (num_paginas <= 10) {
@@ -227,10 +204,10 @@ async function removeAds(files) {
           if(nueva_accion == 'B'){
             const scaleFactor = 1.117;
             page.scale(scaleFactor, scaleFactor);
-            const n_x = bux(width*scaleFactor);
-            const n_y = bly(height*scaleFactor);
-            const n_height = buy(height*scaleFactor)-bly(height*scaleFactor);
-            const n_width = blx(width*scaleFactor)-bux(width*scaleFactor);
+            const n_x = (width*scaleFactor) * 0.144;
+            const n_y = (height*scaleFactor) * 0.027 ;
+            const n_height = ((height*scaleFactor) * 0.86308) - ((height*scaleFactor) * 0.027);
+            const n_width = ((width*scaleFactor) * 0.982) - ((width*scaleFactor) * 0.144);
             page.setMediaBox(n_x, n_y, n_width, n_height);
             page.setBleedBox(n_x, n_y, n_width, n_height);
             page.setArtBox(n_x, n_y, n_width, n_height);
@@ -239,10 +216,10 @@ async function removeAds(files) {
 
           }
           else if(nueva_accion == 'A'){
-            const n_x = aux(width);
-            const n_y = aly(height);
-            const n_height = auy(height)-aly(height);
-            const n_width = alx(width)-aux(width);
+            const n_x = width * 0.02;
+            const n_y = height * 0.05;
+            const n_height = (height * 0.985) - (height * 0.05);
+            const n_width = (width * 0.955) - (width * 0.02);
             page.setMediaBox(n_x, n_y, n_width, n_height);
             page.setBleedBox(n_x, n_y, n_width, n_height);
             page.setArtBox(n_x, n_y, n_width, n_height);
