@@ -6,7 +6,6 @@
     <title>Limpiapuntes Chrome Extension</title>
     <link href="./css/popup.css" rel="stylesheet" type="text/css" />
     <script src="./js/jszip.min.js"></script>
-    <script src="./js/pdf-lib.min.js"></script>
 </head>
 <body>
     <img class="banner" src="./img/banner2.png" alt="banner">
@@ -23,7 +22,7 @@
     <div id="save-button-div" class="save-button-div-c">
         <p id="id-errormsg" class="errormsg"></p>
         <p id="id-errormsg2" class="errormsg"></p>
-        <ul id="e-list"></ul>
+        <p id="id-errormsg3" class="errormsg"></p>
         <p id="info-msg" class="infomsg"></p>
         <div style="visibility: hidden;" id="div_zip" class="cntr">
             <input type="checkbox" id="cbx" class="hidden-xs-up">
@@ -42,6 +41,7 @@
             <div class="dot-spinner__dot"></div>
             </div>
         </div>
+        <p id="paciencia-msg" class="pacienciamsg">¡Paciencia! No cierres la extensión hasta que hayamos acabado.</p>
         <button id="save-button">
             <span class="circle1"></span>
             <span class="circle2"></span>
