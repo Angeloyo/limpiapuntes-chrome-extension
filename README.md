@@ -12,5 +12,3 @@ Para trabajar en local:
 #### Cosas que hacer / Ideas / Problemas
 
 - Contador del número de archivos procesados.
-- Solucionar problema archivos con anuncios de exactamente 101 páginas (pueden darse dos disposiciones de los anuncios).
-- Solucionar que la funcionalidad de descarga no es la esperada cuando se suben dos o más archivos en varias tandas pero en la misma sesión (sin cerrar el popup y volver a abrirlo).
